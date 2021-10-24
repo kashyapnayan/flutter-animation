@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animation/animation/tween_animation.dart';
 
 class CounterAnimation extends StatefulWidget {
   const CounterAnimation({Key? key}) : super(key: key);
@@ -18,8 +19,8 @@ class _CounterAnimationState extends State<CounterAnimation>
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn)
-      ..addListener(() {
+    animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    _controller.addListener(() {
         setState(() {
           _counter++;
           debugPrint('print $_counter');
@@ -35,15 +36,29 @@ class _CounterAnimationState extends State<CounterAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Text(_controller.isAnimating
-          ? _counter.toStringAsFixed(2)
-          : "Let's Begin",
-        style: TextStyle(fontSize:  24.0 * _controller.value + 16.0),
-      ),
-      onTap: (){
-        _controller.forward(from: 0.0);
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          child: Text(
+            _controller.isAnimating
+                ? _counter.toStringAsFixed(2)
+                : "Let's Begin",
+            style: TextStyle(fontSize: 24.0 * _controller.value + 16.0),
+          ),
+          onTap: () {
+            _controller.forward(from: 0.0);
+          },
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TweenAnimation()));
+          },
+          child: const Text('Tween Animation'),
+        )
+      ],
     );
   }
 }

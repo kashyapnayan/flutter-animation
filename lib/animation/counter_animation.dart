@@ -19,13 +19,18 @@ class _CounterAnimationState extends State<CounterAnimation>
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    _controller.addListener(() {
-        setState(() {
-          _counter++;
-          debugPrint('print $_counter');
-        });
+    animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse(from: 0.5);
+        }
       });
+    _controller.addListener(() {
+      setState(() {
+        _counter++;
+        debugPrint('print $_counter');
+      });
+    });
   }
 
   @override

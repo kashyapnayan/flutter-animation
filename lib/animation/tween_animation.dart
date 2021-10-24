@@ -17,6 +17,11 @@ class _TweenAnimationState extends State<TweenAnimation> with SingleTickerProvid
     super.initState();
     _controller = AnimationController(vsync: this,duration: const Duration(seconds: 2));
     animation = Tween(begin: 0.0, end: 6.0).animate(_controller)
+    ..addStatusListener((status) {
+      if(status == AnimationStatus.completed){
+        _controller.reverse(from: 2);
+      }
+    })
     ..addListener(() {
       setState(() {
         debugPrint('Animation Tween ${animation.value}');
